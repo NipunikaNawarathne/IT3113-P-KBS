@@ -1,0 +1,283 @@
+// Code
+
+parent_of(tom,bob).
+parent_of(pam,bob).
+parent_of(tom,liz).
+parent_of(bob,ann).
+parent_of(bob,pat).
+parent_of(pat,jim).
+
+male(tom).
+male(bob).
+male(jim).
+
+female(pam).
+female(liz).
+female(pat).
+female(ann).
+
+mother(X,Y):-parent_of(X,Y),female(X).
+father(X,Y):-parent_of(X,Y),male(X).
+
+% Siblings share at least one parent.
+% X\==Y ensures they are not the same person.
+sister(X,Y):-parent_of(Z,X),parent_of(Z,Y),female(X),X\==Y.
+brother(X,Y):-parent_of(Z,X),parent_of(Z,Y),male(X),X\==Y.
+
+% A grandparent is a parent of a parent.
+% Gender filters distinguish grandfather and grandmother
+grandparent(X,Y):-parent_of(X,Z),parent_of(Z,Y).
+grandfather(X,Y):-parent_of(X,Z),parent_of(Z,Y),male(X).
+grandmother(X,Y):-parent_of(X,Z),parent_of(Z,Y),female(X).
+
+% A grandchild is someone whose parent is the child of another person.
+grandchild(X,Y):-parent_of(Y,Z),parent_of(Z,X).
+grandson(X,Y):-parent_of(Y,Z),parent_of(Z,X),male(X).
+granddaughter(X,Y):-parent_of(Y,Z),parent_of(Z,X),female(X).
+
+happy(X):-parent_of(X,_).
+
+% The twochildren(X) rule uses sister(Y,Z) to confirm siblinghood, which may miss cases where both children are male.
+twochildren(X):- parent_of(X,Y),parent_of(X,Z),sister(Y,Z),Y\==Z.
+
+% An aunt is the sister of a parent.
+% An uncle is the brother of a parent.
+aunt(X,Y):-parent_of(Z,Y),sister(X,Z).
+uncle(X,Y):-parent_of(Z,Y),brother(X,Z).
+
+
+// Questions & Answers
+
+
+1. Is Bob a parent of Tom?
+?- parent_of(bob,tom).
+false.
+
+2. Is Tom a parent of Bob?
+?- parent_of(tom,bob).
+true .
+
+3. Who is Pat's parent?
+?- parent_of(X,pat).
+X = bob.
+
+4. Is Liz a parent of Pat?
+?- parent_of(liz,pat).
+false.
+
+5. Is Tom a parent of Ben?
+?- parent_of(tom,ben).
+false.
+
+6. Who are Bob's parents?
+?- parent_of(X,bob).
+X = tom ;
+X = pam.
+
+7. Who is parent of whom?
+?- parent_of(X,Y).
+X = tom,
+Y = bob ;
+X = pam,
+Y = bob ;
+X = tom,
+Y = liz ;
+X = bob,
+Y = ann ;
+X = bob,
+Y = pat ;
+X = pat,
+Y = jim.
+
+8. Who is grandparent of Jim?
+?- parent_of(X,Y),parent_of(Y,jim).
+X = bob,
+Y = pat ;
+false.
+
+9. Who are Tom's grand children?
+?- parent_of(tom,X),parent_of(X,Y).
+X = bob,
+Y = ann ;
+X = bob,
+Y = pat ;
+false.
+
+10. Do Ann and Pat have a common parent?
+?- parent_of(X,ann),parent_of(X,pat).
+X = bob.
+
+11. Do Ann and Tom have a common parent?
+?- parent_of(X,ann),parent_of(X,tom).
+false.
+
+12. Who is Pat's parent?
+?- parent_of(X,pat).
+X = bob.
+
+13. Does Liz have a child?
+?- parent_of(liz,X).
+false.
+
+14. Who is Pat's grandparent?
+?- parent_of(X,Y),parent_of(Y,pat).
+X = tom,
+Y = bob ;
+X = pam,
+Y = bob ;
+false.
+
+15. parent_of(jim,X).
+?- parent_of(jim,X).
+false.
+
+16. parent_of(X,jim).
+?- parent_of(X,jim).
+X = pat.
+
+17. parent_of(pam,X),parent_of(X,pat).
+?- parent_of(pam,X),parent_of(X,pat).
+X = bob.
+
+18. parent_of(pam,X),parent_of(X,Y),parent_of(Y,jim).
+?- parent_of(pam,X),parent_of(X,Y),parent_of(Y,jim).
+X = bob,
+Y = pat.
+
+
+----------------------------------------------------------
+
+
+19. Define the relation mother using parent and female.
+?- mother(X,bob).
+X = pam.
+
+?- mother(X,pam).
+false.
+
+?- mother(pam,X).
+X = bob.
+
+?- mother(pat,X).
+X = jim.
+
+20. Define the relation father using parent and male.
+?- father(X,pam).
+false.
+
+?- father(X,bob).
+X = tom .
+
+?- father(tom,X).
+X = bob ;
+X = liz.
+
+21. Define the relation sister using parent and female.
+?- sister(X, bob).
+X = liz ;
+false.
+
+?- sister(pam,X).
+false.
+
+22. Define the relation brother using parent and female.
+?- brother(X,liz).
+X = bob ;
+
+?- brother(liz,X).
+false.
+
+23. Define the relation grandparent using parent.
+?- grandparent(X,Y).
+X = tom,
+Y = ann ;
+X = tom,
+Y = pat ;
+X = pam,
+Y = ann ;
+X = pam,
+Y = pat ;
+X = bob,
+Y = jim ;
+false.
+
+24. Define the relation grandfather using parent and male.
+?- grandfather(X,Y).
+X = tom,
+Y = ann ;
+X = tom,
+Y = pat ;
+X = bob,
+Y = jim ;
+false.
+
+25. Define the relation grandmother using parent and female.
+?- grandmother(X,Y).
+X = pam,
+Y = ann ;
+X = pam,
+Y = pat ;
+false.
+
+26. Define the relation grandchild using parent.
+?- grandchild(X,Y).
+X = ann,
+Y = tom ;
+X = pat,
+Y = tom ;
+X = ann,
+Y = pam ;
+X = pat,
+Y = pam ;
+X = jim,
+Y = bob ;
+false.
+
+27. Define the relation grandson using parent and male.
+?- grandson(X,Y).
+X = jim,
+Y = bob ;
+false.
+
+28. Define the relation granddaughter using parent and female.
+?- granddaughter(X,Y).
+X = ann,
+Y = tom ;
+X = pat,
+Y = tom ;
+X = ann,
+Y = pam ;
+X = pat,
+Y = pam ;
+false.
+
+29. Everybody who has a child is happy.
+?- happy(X).
+X = tom ;
+X = pam ;
+X = tom ;
+X = bob ;
+X = bob ;
+X = pat.
+
+30. For all X, if X has a child who has a sister then X has 2 children.
+?- twochildren(X).
+X = tom ;
+X = bob ;
+X = bob ;
+false.
+
+31. Define the relation (sister of parent)aunt(X,Y) in terms of the relations parent and sister.
+?- aunt(X,Y).
+X = liz,
+Y = ann ;
+X = liz,
+Y = pat ;
+X = ann,
+Y = jim ;
+false.
+
+32. Define the relation uncle using the appropriate relations.
+?- uncle(X,Y).
+false.
+
