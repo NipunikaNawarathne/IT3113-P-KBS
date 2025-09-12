@@ -1,0 +1,260 @@
+?- X is 10+3.
+X = 13.
+
+?- X is 10-3.
+X = 7.
+
+?- X is 10*3.
+X = 30.
+
+?- X is 10/3.
+X = 3.3333333333333335.
+
+?- X is 10 mod 3.
+X = 1.
+
+?- X is 10 // 3.
+X = 3.
+
+?- X is 10 // 4.
+X = 2.
+
+?- X is 10 // 6.
+X = 1.
+
+///////////////////////////////////////////////////
+
+?- 7>4.
+true.
+
+?- 7<4.
+false.
+
+?- 7<12.
+true.
+
+?- 7>12.
+false.
+
+?- 7>7.
+false.
+
+?- 7<7.
+false.
+
+?- 7>=7.
+true.
+
+?- 7<=7.
+ERROR: Syntax error: Operator expected
+ERROR: 
+ERROR: ** here **
+ERROR: 7<=7 . 
+?- 7=<7.
+true.
+
+?- 7=:=7.
+true.
+
+?- 7=:=8.
+false.
+
+?- 7=\=8.
+true.
+
+?- 7=\=7.
+false.
+
+
+///////////////////////////////////////////////////
+
+?- cat==cat.
+true.
+
+?- 7==7.
+true.
+
+?- tree2==tree2.
+true.
+
+?- tree2==tree1.
+false.
+
+?- tree2\==tree1.
+true.
+
+?- 7\==7.
+false.
+
+?- 7\==8.
+true.
+
+///////////////////////////////////////////////////
+
+?- X is abs(6).
+X = 6.
+
+?- X is abs(-6).
+X = 6.
+
+?- X is abs(6.34).
+X = 6.34.
+
+?- X is exp(6).
+X = 403.4287934927351.
+
+?- X is sqrt(25).
+X = 5.0.
+
+?- X is float(22).
+X = 22.0.
+
+?- X is float(22.3435452).
+X = 22.3435452.
+
+?- X is floor(31.3435452).
+X = 31.
+
+?- X is truncate(1.5).
+X = 1.
+
+?- X is truncate(1.3).
+X = 1.
+
+?- X is truncate(1.9).
+X = 1.
+
+?- X is truncate(2).
+X = 2.
+
+?- X is truncate(2.3).
+X = 2.
+
+?- X is truncate(2.7).
+X = 2.
+
+?- X is round(2.7).
+X = 3.
+
+?- X is round(2.5).
+X = 3.
+
+?- X is round(2.3).
+X = 2.
+
+?- X is ceiling(2.3).
+X = 3.
+
+?- X is ceiling(2.5).
+X = 3.
+
+///////////////////////////////////////////////////
+
+?- write "Hello").
+Hello
+true.
+
+?- write("Hello"), write(""), write("How are you").
+HelloHow are you
+true.
+
+?- write("Hello"), write(" "), write("How are you").
+Hello How are you
+true.
+
+?- write("Hello"), write(nl), write("How are you").
+Hellon How are you
+true.
+
+?- write("Hello"),nl, write"How are you").
+Hello
+How are you
+true.
+
+?- writeq("Hello"),nl, writeq("How are you").
+"Hello"
+"How are you"
+true.
+
+?- write(Hello).
+_63296
+true.
+
+?- write(hello).
+hello
+true.
+
+?- write("hello").
+hello
+true.
+
+/////////////////////////////////////////////////// User Input
+
+?- write("Enter the term: "),read(X),nl,write("Term is "),write(X).
+Enter the term: car.
+
+Term is car
+X = car.
+
+?- write("Enter the term: "),read(X),nl,write("Term is "),write(X).
+Enter the term: 7.
+
+Term is 7
+X = 7.
+
+/////////////////////////////////////////////////// Exercise
+
+Write the rules for following Questions
+
+1. find the sum of 2 integers
+
+sum(X,Y):-Sum is X+Y, write("Summation: "), write(Sum).
+sum(X,Y,Z):-Z is X+Y.
+
+2. find an integer is odd or even
+
+oddeven(X):-N is X mod 2,N==0->write(X),write(" is Even"); write(X),write(" is Odd").
+
+3. display the word entered by the user
+
+displayWord:-write("Enter a term: "), read(Word),write("Entered term: "),write(Word).
+
+4. read 2 integers and a operation from user and find the output
+
+find(A,B,sum,X):-X is A+B.
+find(A,B,sub,X):-X is A-B.
+find(A,B,div,X):-X is A/B.
+find(A,B,mul,X):-X is A*B.
+cal(X):-write("Enter the value: "), read(A),nl,
+    write("Enter the value: "), read(B),nl,
+    write("Enter the operator(sum,sub,div,mul): "), read(O),
+    find(A,B,O,X).
+
+5. output integers from first to last inclusive
+
+output_values(First,Last):- First=\=Last,write(First),
+    nl, N is First+1,output_values(N,Last).
+output_values(Last,Last):- write(Last),nl,
+    write('end of example'), nl.
+
+6. sum the integers from 1 to N
+
+sumto(1,1). % Turmination condition
+sumto(N,S):-N>1,N1 is N-1, sumto(N1,S1), S is S1+N.
+
+7. output the first N squares, one per line
+
+writesquares(1):-write(1),nl.
+writesquares(N):-N>1,N1 is N-1, writesquares(N1),
+    Nsq is N*N, write(Nsq),nl.
+
+8. read terms entered by the user from the 
+	keyboard and output them to screen, until end is encountered
+
+
+
+9. find factorial of a positive integer N.,
+
+
+
+
